@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  api:
+    # command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm run dev'
+    command: npm run dev
+    container_name: api
+    env_file: ./.env
+    restart: unless-stopped
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+      target: base
+    environment:
+      - API_PORT=$NODE_LOCAL_PORT
+      - DB_HOST=api_db
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - DB_NAME=$MYSQLDB_DATABASE
+      - DB_PORT=$MYSQLDB_LOCAL_PORT
+    depends_on:
+      - api_db
+    volumes:
+      - ./services/api/src:/home/node/app/src
+      - ./services/api/nodemon.json:/home/node/app/nodemon.json
+    networks:
+      - app-network
+  api_db:
+    # command: --default-authentication-plugin=mysql_native_password
+    container_name: api_db
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - api_db:/var/lib/mysql
+    networks:
+      - app-network
+volumes:
+  api_db:
+networks:
+  app-network:
+    driver: bridge

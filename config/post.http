@@ -1,0 +1,8 @@
+POST http://localhost:6868/subscribe
+Content-type: application/json; charset=utf-8
+
+{
+    "firstname": "Lola",
+    "lastname": "Lolavich",
+    "email": "sobaka@gmail.com"
+}
