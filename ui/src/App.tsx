@@ -7,7 +7,7 @@ export const App = () => {
   return (
     <div className="app">
       AppHot123123
-      <Icon name="arrow-down" height={10} width={10} color="red" />
+      <Icon name="arrow-link" height={20} width={20} color="black" />
       <button
         onClick={() => {
           setCount((prev) => prev + 1);

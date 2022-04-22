@@ -1,8 +1,10 @@
 // ignore this error
 @import-normalize;
+@import '/src/assets/fonts/fonts.scss';
 
 :root {
   box-sizing: border-box;
+  font-family: 'Gilroy', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 body {
